@@ -70,7 +70,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     </script>
-    <script src="../temp-folder/newRoads.js"></script>
+    <script src="../temp-folder/roadds.js"></script>
     
     <!-- Footer -->
     <div class="footer">
@@ -80,24 +80,23 @@
 
 </html>
 <script>
-    var blueCount = 0; // Initialize count for blue color
 
     L.geoJSON(RoadData, {
         style: function(feature) {
-            var randomNumber = feature.properties.randomNumber;
-            var opacity = randomNumber * 0.1;
-            var color = 'blue';
-            if (randomNumber <= 3) {
-                color = 'blue';
-                blueCount++; // Increment count for blue color
-
-            } else if (randomNumber <= 6) {
-                color = 'blue';
-                blueCount++; // Increment count for blue color
-
-            } else {
-                blueCount++; // Increment count for blue color
-            }
+            var num = feature.properties.flood_intensity;
+            var opacity = num * 0.1;
+            var color;
+            if (num <= 1) color = '#0000FF';
+            else if (num <= 2) color = '#3281a8';
+            else if (num <= 3) color = '#326ba8';
+            else if (num <= 4) color = '#325da8';
+            else if (num <= 5) color = '#324ca8';
+            else if (num <= 6) color = '#3238a8';
+            else if (num <= 7) color = '#4232a8';
+            else if (num <= 8) color = '#1e0f7d';
+            else if (num <= 9) color = '#0f054a';
+            else color = '#0b0240';
+        
             return {
                 color: color,
                 opacity: opacity
