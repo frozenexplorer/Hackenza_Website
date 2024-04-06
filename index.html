@@ -57,6 +57,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     </script>
+    <script src="../temp-folder/roads.js"></script>
     
     <!-- Footer -->
     <div class="footer">
@@ -65,3 +66,7 @@
 </body>
 
 </html>
+<script>
+    L.geoJSON(RoadData).addTo(map);
+    map.removeLayer(marker);
+</script>
