@@ -62,7 +62,7 @@
     
     <script>
         // Initialize map
-        var map = L.map('map').setView([28.68548, 77.20], 15.5);
+        var map = L.map('map').setView([28.68548, 77.20], 14.5);
         
         // Add OpenStreetMap tile layer
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -70,7 +70,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     </script>
-    <script src="../temp-folder/roads.js"></script>
+    <script src="../temp-folder/newRoads.js"></script>
     
     <!-- Footer -->
     <div class="footer">
@@ -80,14 +80,45 @@
 
 </html>
 <script>
-    L.geoJSON(RoadData).addTo(map);
-    L.geoJSON(RoadData,{
-        onEachFeature: function(feature, layer){
-            layer.bindPopup(feature.properties.name);
+    var blueCount = 0; // Initialize count for blue color
+
+    L.geoJSON(RoadData, {
+        style: function(feature) {
+            var randomNumber = feature.properties.randomNumber;
+            var opacity = randomNumber * 0.1;
+            var color = 'blue';
+            if (randomNumber <= 3) {
+                color = 'blue';
+                blueCount++; // Increment count for blue color
+
+            } else if (randomNumber <= 6) {
+                color = 'blue';
+                blueCount++; // Increment count for blue color
+
+            } else {
+                blueCount++; // Increment count for blue color
+            }
+            return {
+                color: color,
+                opacity: opacity
+            };
+        },
+        onEachFeature: function(feature, layer) {
+            layer.on({
+                mouseover: function(e) {
+                    this.openPopup();
+                },
+                mouseout: function(e) {
+                    this.closePopup();
+                }
+            }).bindPopup(feature.properties.name);
         }
     }).addTo(map);
+
     map.on('mousemove', function(e){
         document.querySelector('.coordinate').innerText = 'lat: ' + e.latlng.lat + ', lng: ' + e.latlng.lng;
         console.log('lat: '+e.latlng.lat,'lng: '+e.latlng.lng);
-    })
+    });
+
+    console.log('Number of blue roads:', blueCount); // Print count for blue color
 </script>
