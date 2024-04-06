@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flood Map</title>
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-     
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <!-- Custom CSS -->
     <style>
         body {
@@ -18,13 +17,14 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-        
-        #map { 
+
+        #map {
             height: 100vh;
             width: 100%;
             position: relative;
         }
-        .coordinate{
+
+        .coordinate {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -34,7 +34,7 @@
             color: #333;
             z-index: 1000;
         }
-        
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -50,20 +50,19 @@
 </head>
 
 <body>
-   
+
     <div id="map">
         <div class="coordinate"></div>
     </div>
-   
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-    
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <script>
         // Initialize map
         var map = L.map('map').setView([28.68548, 77.20], 14.5);
-        
+
         // Add OpenStreetMap tile layer
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -71,7 +70,7 @@
         }).addTo(map);
     </script>
     <script src="../temp-folder/roadds.js"></script>
-    
+
     <!-- Footer -->
     <div class="footer">
         &copy; 2024 Beautiful Map Project
@@ -82,7 +81,7 @@
 <script>
 
     L.geoJSON(RoadData, {
-        style: function(feature) {
+        style: function (feature) {
             var num = feature.properties.flood_intensity;
             var opacity = num * 0.1;
             var color;
@@ -96,27 +95,27 @@
             else if (num <= 8) color = '#1e0f7d';
             else if (num <= 9) color = '#0f054a';
             else color = '#0b0240';
-        
+
             return {
                 color: color,
                 opacity: opacity
             };
         },
-        onEachFeature: function(feature, layer) {
+        onEachFeature: function (feature, layer) {
             layer.on({
-                mouseover: function(e) {
+                mouseover: function (e) {
                     this.openPopup();
                 },
-                mouseout: function(e) {
+                mouseout: function (e) {
                     this.closePopup();
                 }
             }).bindPopup(feature.properties.name);
         }
     }).addTo(map);
 
-    map.on('mousemove', function(e){
+    map.on('mousemove', function (e) {
         document.querySelector('.coordinate').innerText = 'lat: ' + e.latlng.lat + ', lng: ' + e.latlng.lng;
-        console.log('lat: '+e.latlng.lat,'lng: '+e.latlng.lng);
+        console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng);
     });
 
     console.log('Number of blue roads:', blueCount); // Print count for blue color
