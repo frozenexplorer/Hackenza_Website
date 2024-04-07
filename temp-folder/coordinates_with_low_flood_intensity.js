@@ -2,7 +2,12 @@
 
 function createMarkers(coordinates) {
     coordinates.forEach(coord => {
-        L.marker(coord).addTo(map);
+        var marker = L.marker(coord).addTo(map);
+        marker.bindPopup('Safe').on('mouseover', function(event) {
+            this.openPopup();
+        }).on('mouseout', function(event) {
+            this.closePopup();
+        });
     });
 }
 
