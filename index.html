@@ -70,8 +70,9 @@
         }).addTo(map);
     </script>
     <script src="../temp-folder/roadds.js"></script>
-
+    <script src="../temp-folder/coordinates_with_low_flood_intensity.js"></script>
     <!-- Footer -->
+    <div class="footer">
     <div class="footer">
         &copy; 2024 Beautiful Map Project
     </div>
@@ -79,7 +80,7 @@
 
 </html>
 <script>
-
+    
     L.geoJSON(RoadData, {
         style: function (feature) {
             var num = feature.properties.flood_intensity;
@@ -112,11 +113,16 @@
             }).bindPopup(feature.properties.name);
         }
     }).addTo(map);
-
+    
     map.on('mousemove', function (e) {
         document.querySelector('.coordinate').innerText = 'lat: ' + e.latlng.lat + ', lng: ' + e.latlng.lng;
         console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng);
     });
+    // L.marker([28.6832093,77.1867425]).addTo(map);
+    // marker.setZIndexOffset(1000);
+    // console.log(hello);
 
-    console.log('Number of blue roads:', blueCount); // Print count for blue color
+    function getSafeCoordinates(safeC) {
+            return safeC;
+    }
 </script>
