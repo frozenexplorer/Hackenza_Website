@@ -1,15 +1,4 @@
-// Assuming you have a Leaflet map initialized and stored in the variable 'map'
 
-function createMarkers(coordinates) {
-    coordinates.forEach(coord => {
-        var marker = L.marker(coord).addTo(map);
-        marker.bindPopup('Safe').on('mouseover', function(event) {
-            this.openPopup();
-        }).on('mouseout', function(event) {
-            this.closePopup();
-        });
-    });
-}
 
 // Coordinates array
 const safeC = [
@@ -25,5 +14,3 @@ const safeC = [
     [28.6832093, 77.1867425]
 ];
 
-// Create markers
-createMarkers(safeC);

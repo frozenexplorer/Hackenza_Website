@@ -81,7 +81,19 @@
 
 </html>
 <script>
-    
+    var LeafIcon = L.Icon.extend({
+    options: {
+       iconSize:     [38, 95],
+       shadowSize:   [50, 64],
+       iconAnchor:   [22, 94],
+       shadowAnchor: [4, 62],
+       popupAnchor:  [-3, -76]
+    }
+ });
+ var greenIcon = new LeafIcon({
+    iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
+    shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
+})
     L.geoJSON(RoadData, {
         style: function (feature) {
             var num = feature.properties.flood_intensity;
@@ -117,7 +129,8 @@
     
     map.on('mousemove', function (e) {
         document.querySelector('.coordinate').innerText = 'lat: ' + e.latlng.lat + ', lng: ' + e.latlng.lng;
-        console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng);
+       
+        
     });
     // L.marker([28.6832093,77.1867425]).addTo(map);
     // marker.setZIndexOffset(1000);
@@ -126,7 +139,47 @@
     function getSafeCoordinates(safeC) {
             return safeC;
     }
-    function popuu(dangerC) {
-        return dangerC;
+    
+function onMapClick(e) {
+    console.log(e);
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    L.marker([lat, lng],{icon: greenIcon}).addTo(map).bindPopup('Selected Location').openPopup();
 }
+map.on('click', onMapClick);
+</script>
+<script>
+    dangerC.forEach(coord => {
+    // Create a red circle at each coordinate
+    var circle = L.circle(coord, {
+        color: 'red', // Set the color of the circle to red
+        fillColor: 'red', // Set the fill color of the circle to red
+        fillOpacity: 0.5, // Set the opacity of the fill color
+        radius: 35 // Set the radius of the circle (adjust as needed)
+    });
+
+    // Bind a popup to the circle with the text "This is danger" on hover
+    circle.on('mouseover', function(event) {
+        this.bindPopup('Danger').openPopup();
+    });
+
+    // Close the popup when mouse moves out of the circle
+    circle.on('mouseout', function(event) {
+        this.closePopup();
+    });
+
+    // Add the circle to the map
+    circle.addTo(map);
+});
+
+</script>
+<script>
+    safeC.forEach(coord => {
+        var marker = L.marker(coord).addTo(map);
+        marker.bindPopup('Safe').on('mouseover', function(event) {
+            this.openPopup();
+        }).on('mouseout', function(event) {
+            this.closePopup();
+        });
+    });
 </script>
