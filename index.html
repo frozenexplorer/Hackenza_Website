@@ -16,12 +16,49 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        
+        #map { 
+            height: calc(100vh - 160px); /* Adjust map height to take up majority of the screen */
+            width: 95%; /* Adjust map width */
+            margin: 20px auto; /* Center the map horizontally */
+            margin-top: 5%;
+            position: relative;
+            border-radius: 10px; /* Rounded corners for the map */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+        }
+        .navbar {
+            background-color: #007bff; /* Blue color for navbar */
+            color: white;
+            padding: 10px 25px; /* Adjust padding as needed */
+            font-size: 18px;
+            text-align: center;
+            position: fixed; /* Fix the navbar at the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure navbar is above other elements */
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
         }
 
-        #map {
-            height: 100vh;
-            width: 100%;
-            position: relative;
+        .leaflet-bar a {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
         }
 
         .coordinate {
@@ -34,23 +71,13 @@
             color: #333;
             z-index: 1000;
         }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-            color: #333;
-        }
     </style>
 </head>
 
 <body>
-
+    <div class="navbar">
+        <span>Flood Map Navigation</span>
+    </div>
     <div id="map">
         <div class="coordinate"></div>
     </div>
@@ -72,28 +99,41 @@
     <script src="../temp-folder/roadds.js"></script>
     <script src="../temp-folder/coordinates_with_low_flood_intensity.js"></script>
     <script src="../temp-folder/coordinates_with_high_flood_intensity.js"></script>
+    <script src="../temp-folder/minDist.js"></script>
     <!-- Footer -->
     <div class="footer">
     <div class="footer">
-        &copy; 2024 Beautiful Map Project
+        &copy; 2024 Flood Map Project
     </div>
 </body>
 
 </html>
 <script>
-    var LeafIcon = L.Icon.extend({
-    options: {
-       iconSize:     [38, 95],
-       shadowSize:   [50, 64],
-       iconAnchor:   [22, 94],
-       shadowAnchor: [4, 62],
-       popupAnchor:  [-3, -76]
-    }
- });
- var greenIcon = new LeafIcon({
-    iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
-    shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png'
-})
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    })
+    osm.addTo(map);
+    var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3']
+        });
+        googleSat.addTo(map);
+
+        var singleMarker = L.marker([0,0]);
+        singleMarker.addTo(map); 
+
+        var baseMaps = {
+            "OpenStreetMap": osm,
+            "Satellite": googleSat
+            // "DarkMap": CartoDB_DarkMatter
+        };
+
+        var overlayMaps = {
+            "Set as Default": singleMarker
+        };
+
+        var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
     L.geoJSON(RoadData, {
         style: function (feature) {
             var num = feature.properties.flood_intensity;
@@ -144,7 +184,7 @@ function onMapClick(e) {
     console.log(e);
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
-    L.marker([lat, lng],{icon: greenIcon}).addTo(map).bindPopup('Selected Location').openPopup();
+    L.marker([lat, lng]).addTo(map).bindPopup('Selected Location').openPopup();
 }
 map.on('click', onMapClick);
 </script>
