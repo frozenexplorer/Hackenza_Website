@@ -96,10 +96,10 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     </script>
-    <script src="../temp-folder/roadds.js"></script>
-    <script src="../temp-folder/coordinates_with_low_flood_intensity.js"></script>
-    <script src="../temp-folder/coordinates_with_high_flood_intensity.js"></script>
-    <script src="../temp-folder/minDist.js"></script>
+    <script src="../main-folder/AllRoads.js"></script>
+    <script src="../main-folder/coordinates_with_low_flood_intensity.js"></script>
+    <script src="../main-folder/coordinates_with_high_flood_intensity.js"></script>
+    <script src="../main-folder/minDist.js"></script>
     <!-- Footer -->
     <div class="footer">
     <div class="footer">
@@ -176,10 +176,6 @@
     // marker.setZIndexOffset(1000);
     // console.log(hello);
 
-    function getSafeCoordinates(safeC) {
-            return safeC;
-    }
-    
 function onMapClick(e) {
     console.log(e);
     var lat = e.latlng.lat;

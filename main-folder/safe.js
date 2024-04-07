@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Read the GeoJSON file
-const geojsonData = JSON.parse(fs.readFileSync('roadds.geojson', 'utf8'));
+const geojsonData = JSON.parse(fs.readFileSync('AllRoads.geojson', 'utf8'));
 
 // Initialize an array to store the coordinates
 const coordinatesWithLowFloodIntensity = [];

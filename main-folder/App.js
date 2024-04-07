@@ -48,7 +48,7 @@ fs.createReadStream("Rainfall.csv")
     });
 
     // Write the filtered GeoJSON data to a file
-    fs.writeFileSync("roadds.geojson", JSON.stringify(roadsGeoJSON), "utf8");
+    fs.writeFileSync("AllRoads.geojson", JSON.stringify(roadsGeoJSON), "utf8");
 
     console.log("Roads identified and saved to roads.geojson file.");
   });
